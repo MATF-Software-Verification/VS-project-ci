@@ -1,5 +1,14 @@
 #!/bin/bash
 
+for f in .github/workflows/*; do
+    expected_sha=$(wget -qO- https://github.com/MATF-Software-Verification/VS-project-ci/blob/main/.github/workflows/$f | sha512sum)
+    current_sha=$(sha512sum $f)
+    if [ $expected_sha != $current_sha ]; then
+        echo "FATAL: Your CI files are not in sync with the official repository"
+        exit 2
+    fi
+done
+
 ret=0
 
 function flc () 
@@ -61,7 +70,7 @@ fi
 
 
 # Final note
-if [ $ret -eq 1 ]; then
+if [ $ret -ne 0 ]; then
     echo
     echo "=== GATE FAILED ==="
     echo "Please re-read instructions on the course webpage: https://matf-software-verification.github.io/obligations.html#h-samostalni-prakti%C4%8Dni-seminarski-rad-40-poena"
