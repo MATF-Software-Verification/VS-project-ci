@@ -1,9 +1,9 @@
 #!/bin/bash
 
 for f in .github/workflows/*; do
-    expected_sha=$(wget -qO- https://raw.githubusercontent.com/MATF-Software-Verification/VS-project-ci/main/.github/workflows/$f)
-    current_sha=$(sha512sum $f)
-    if [ $expected_sha != $current_sha ]; then
+    expected_sha=$(wget -qO- "https://raw.githubusercontent.com/MATF-Software-Verification/VS-project-ci/main/.github/workflows/$f" | sha512sum)
+    current_sha=$(sha512sum "$f")
+    if [ "$expected_sha" != "$current_sha" ]; then
         echo "FATAL: Your CI files are not in sync with the official repository"
         exit 2
     fi
