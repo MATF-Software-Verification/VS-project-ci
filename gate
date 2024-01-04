@@ -44,7 +44,7 @@ else
 fi
 
 # LICENSE check
-if [ -f LICENSE ]; then
+if [ ! -f LICENSE ]; then
     echo "WARN: LICENSE missing. Please add a license."
 else
     echo "PASS: LICENSE check"
